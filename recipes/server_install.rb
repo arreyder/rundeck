@@ -269,12 +269,15 @@ bags.each do |project|
   --project.resources.file=#{node['rundeck']['datadir']}/projects/#{project}/etc/resources.xml #{custom}
   EOH
 
+  cmd2 = "rd-jobs -p #{project} list 2>&1 | grep -q '^ERROR .*project does not exist'"
+
+  puts cmd2.inspect
+  
   bash "check-project-#{project}" do
     user node['rundeck']['user']
     code cmd.strip
     # will return 0 if grep matches
     # only run if project does not exist
-    cmd2 = "rd-jobs -p #{project} list 2>&1 | grep -q '^ERROR .*project does not exist'"
     only_if system cmd2 
 
     retries 5
