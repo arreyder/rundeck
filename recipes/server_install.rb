@@ -274,7 +274,8 @@ bags.each do |project|
     code cmd.strip
     # will return 0 if grep matches
     # only run if project does not exist
-    only_if "rd-jobs -p #{project} list 2>&1 | grep -q '^ERROR .*project does not exist'"
+    cmd2 = "rd-jobs -p #{project} list 2>&1 | grep -q '^ERROR .*project does not exist'"
+    only_if system cmd2 
 
     retries 5
     retry_delay 15
